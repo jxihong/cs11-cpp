@@ -1,0 +1,14 @@
+C++ Linked-List Implementation
+==================================
+
+Written By: Joey Hong
+
+This is an implementation of the linked-list data structure for integers. It includes regular and const iterators, as well as various interfaces that can be applied to the list.
+
+----------------------------------
+
+The main program can be compiled with 'make'. There is a sample test file that can be edited.
+
+To run the program, type:
+
+./list-test
