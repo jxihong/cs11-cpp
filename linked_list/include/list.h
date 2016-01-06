@@ -6,24 +6,28 @@
 
 #include "list_node.h"
 
+template<typename T>
 class ApplyFunction;
+
+template<typename T>
 class ReduceFunction;
+
 template <typename T>
 class ListNode;
 
-class List {
+template <typename T> class List {
  private:
   size_t _length;
-  ListNodeI *_begin;
-  ListNodeI *_back;
+  ListNode<T> *_begin;
+  ListNode<T> *_back;
 
 public: 
   // Can use outside as List::iterator type
   class iterator {
-    friend class List;
-    ListNodeI *_node;
+    friend class List<T>;
+    ListNode<T> *_node;
   public:
-    iterator( ListNodeI *node );
+    iterator( ListNode<T> *node );
     iterator& operator++();
     int& operator*();
     bool operator==( const iterator &rhs );
@@ -32,10 +36,10 @@ public:
 
   // Can use outside as List::const_iterator type
   class const_iterator {
-    friend class List;
-    ListNodeI *_node;
+    friend class List<T>;
+    ListNode<T> *_node;
   public:
-    const_iterator( ListNodeI *node );
+    const_iterator( ListNode<T> *node );
     const_iterator& operator++();
     const int& operator*();
     bool operator==( const const_iterator &rhs );
@@ -43,10 +47,10 @@ public:
   };
 
   List();
-  List( const List &list );
-  List& operator=( const List &list );
-  List( List &&list);
-  List& operator=( List &&list );
+  List( const List<T> &list );
+  List<T>& operator=( const List<T> &list );
+  List( List<T> &&list);
+  List<T>& operator=( List<T> &&list );
   ~List();
 
   size_t length() const;
@@ -66,19 +70,20 @@ public:
   void deleteAll( int val );
   void insert( iterator pos, int val );
   
-  void apply( const ApplyFunction &interface );
-
-  int reduce( const ReduceFunction &interface ) const;
+  void apply ( const ApplyFunction<T> &interface );
   
+  T reduce ( const ReduceFunction<T> &interface ) const;
+
   void print() const;
   void clear();
 
 private:
-  ListNodeI* node( iterator it ) { return it._node; }
-  ListNodeI* node( const_iterator it ) { return it._node; }
+  ListNode<T>* node( iterator it ) { return it._node; }
+  ListNode<T>* node( const_iterator it ) { return it._node; }
 };
 
-List merge(List &list1, List &list2);
+template<typename T>
+List<T> merge(List<T> &list1, List<T> &list2);
 
 class ListOutOfBounds : public std::range_error {
 public:

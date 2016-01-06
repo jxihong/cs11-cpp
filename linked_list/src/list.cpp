@@ -4,15 +4,19 @@
 
 #include <iostream>
 
-List::List() : _length(0), _begin(nullptr), _back(nullptr) {}
+template <typename T>
+List<T>::List() : _length(0), _begin(nullptr), _back(nullptr) {}
 
-List::List( const List &list ) : _length(0), _begin(nullptr), _back(nullptr) {
+
+template <typename T>
+List<T>::List( const List<T> &list ) : _length(0), _begin(nullptr), _back(nullptr) {
   for( auto it = list.begin(); it != list.end(); ++it ) {
     append( *it );
   } 
 }
 
-List& List::operator=( const List &list ) {
+template <typename T>
+List<T>& List<T>::operator=( const List<T> &list ) {
   if( this != &list ) {
     clear();
     for( auto it = list.begin(); it != list.end(); ++it ) {
@@ -22,7 +26,8 @@ List& List::operator=( const List &list ) {
   return *this;
 }
 
-List::List( List &&list): _length(0), _begin(nullptr), _back(nullptr) {
+template <typename T>
+List<T>::List( List<T> &&list): _length(0), _begin(nullptr), _back(nullptr) {
   for (auto it = list.begin(); it != list.end(); ++it) {
     append(*it);
   }
@@ -31,7 +36,8 @@ List::List( List &&list): _length(0), _begin(nullptr), _back(nullptr) {
   list._back = nullptr;
 }
 
-List& List::operator=( List &&list ) {
+template <typename T>
+List<T>& List<T>::operator=( List<T> &&list ) {
   if (this != &list) {
     clear();
     for (auto it = list.begin(); it != list.end(); ++it) {
@@ -44,11 +50,14 @@ List& List::operator=( List &&list ) {
   return *this;
 }
 
-List::~List() { clear(); }
+template <typename T>
+List<T>::~List() { clear(); }
 
-size_t List::length() const { return _length; }
+template <typename T>
+size_t List<T>::length() const { return _length; }
 
-int& List::value( size_t pos ) {
+template <typename T>
+int& List<T>::value( size_t pos ) {
   auto it = begin();
   for( size_t i = 0; i < pos && it != end(); ++it, ++i );
   if( it == end() ) {
@@ -58,7 +67,8 @@ int& List::value( size_t pos ) {
   return *it;
 }
 
-int List::value( size_t pos ) const {
+template <typename T>
+int List<T>::value( size_t pos ) const {
   auto it = begin();
   for( size_t i = 0; i < pos && it != end(); ++it, ++i );
   if( it == end() ) {
@@ -68,19 +78,32 @@ int List::value( size_t pos ) const {
   return *it;
 }
 
-bool List::empty() const {
+template <typename T>
+bool List<T>::empty() const {
   return _length == 0;
 }
 
-List::iterator List::begin() { return iterator{ _begin }; }
-List::const_iterator List::begin() const { return const_iterator{ _begin }; }
-List::iterator List::back() { return iterator{ _back }; }
-List::const_iterator List::back() const { return const_iterator{ _back }; }
-List::iterator List::end() { return iterator{ nullptr }; }
-List::const_iterator List::end() const { return const_iterator{ nullptr }; }
+template <typename T>
+typename List<T>::iterator List<T>::begin() { return iterator{ _begin }; }
 
-void List::append( int val ) {
-  auto *newNode = ListNodeI::create( val );
+template <typename T>
+typename List<T>::const_iterator List<T>::begin() const { return const_iterator{ _begin }; }
+
+template <typename T>
+typename List<T>::iterator List<T>::back() { return iterator{ _back }; }
+
+template <typename T>
+typename List<T>::const_iterator List<T>::back() const { return const_iterator{ _back }; }
+
+template <typename T>
+typename List<T>::iterator List<T>::end() { return iterator{ nullptr }; }
+
+template <typename T>
+typename List<T>::const_iterator List<T>::end() const { return const_iterator{ nullptr }; }
+
+template <typename T>
+void List<T>::append( int val ) {
+  auto *newNode = ListNode<T>::create( val );
 
   if( empty() ) {
     newNode->setNext( _back );
@@ -93,7 +116,8 @@ void List::append( int val ) {
   ++_length;
 }
 
-void List::deleteAll( int val ) {
+template <typename T>
+void List<T>::deleteAll( int val ) {
   if( !empty() ) {
     // Delete from the front
     while( _begin->value() == val && _begin != _back ) {
@@ -109,7 +133,7 @@ void List::deleteAll( int val ) {
       // Normal deletion from interior of list
       for( ; p->next() != _back; ) {
         if( p->next()->value() == val ) {
-          ListNodeI::deleteNext( p );
+          ListNode<T>::deleteNext( p );
           --_length;
         } else {
           p = p->next();
@@ -118,7 +142,7 @@ void List::deleteAll( int val ) {
 
       // Deleting the last item
       if( _back->value() == val ) {
-        ListNodeI::deleteNext( p );
+        ListNode<T>::deleteNext( p );
         _back = p;
         --_length;
       }
@@ -131,17 +155,19 @@ void List::deleteAll( int val ) {
 }
 
 // Inserts new node behind the node pointed to be iterator
-void List::insert ( iterator pos, int val) {
+template <typename T>
+void List<T>::insert ( iterator pos, int val) {
   auto *node = pos._node;
   auto *next = node->next();
 
-  auto *newNode = ListNodeI::create(val);
+  auto *newNode = ListNode<T>::create(val);
   newNode->insertAfter(node);
   newNode->setNext(next);
 }
 
 // Finds first instance and returns iterator to it
-List::iterator List::find(int val) {
+template <typename T>
+typename List<T>::iterator List<T>::find(int val) {
   for( auto it = begin(); it != end(); ++it ) {
     if( *it == val ) {
       return it;
@@ -150,15 +176,18 @@ List::iterator List::find(int val) {
   return end();
 }
 
-void List::apply( const ApplyFunction &interface) {
-  return interface.apply( *this);
+template <typename T>
+void List<T>::apply( const ApplyFunction<T> &interface) {
+  return interface.apply(*this);
 }
 
-int List::reduce( const ReduceFunction &interface ) const {
-  return interface.reduce( *this );
+template <typename T>
+T List<T>::reduce( const ReduceFunction<T> &interface) const{
+  return interface.reduce(*this);
 }
 
-void List::print() const {
+template <typename T>
+void List<T>::print() const {
   std::cout << "{ ";
   for( auto it = begin(); it != back(); ++it ) {
     std::cout << *it << " -> ";
@@ -169,7 +198,8 @@ void List::print() const {
   std::cout << "}\n";
 }
 
-void List::clear() {
+template <typename T>
+void List<T>::clear() {
   for( auto *p = _begin; p != nullptr; ) {
     auto *p_next = p->next();
     delete p;
@@ -180,8 +210,9 @@ void List::clear() {
   _back = nullptr;
 }
 
-List merge(List &list1, List &list2) {
-  List mergeList(list1);
+template <typename T>
+List<T> merge(List<T> &list1, List<T> &list2) {
+  List<T> mergeList(list1);
   for (auto it = list2.begin(); it != list2.end(); ++it) {
     mergeList.append(*it);
   }

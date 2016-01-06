@@ -2,17 +2,17 @@
 #define _APPLY_H_
 #include "list.h"
 
-class ApplyFunction {
+template <typename T> class ApplyFunction {
 protected:
-  virtual int function( int x ) const = 0;
+  virtual int function( T x ) const = 0;
 public:
-  void apply( List &list ) const;
+  void apply( List<T> &list ) const;
   virtual ~ApplyFunction() {}
 };
 
 // An example ApplyFunction (see apply.cpp)
-class SquareApply : public ApplyFunction {
-  int function( int x ) const;
+template <typename T> class SquareApply : public ApplyFunction<T> {
+  int function( T x ) const;
 };
 
 #endif // _CPPLIST_APPLY_H_

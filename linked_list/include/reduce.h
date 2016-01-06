@@ -2,31 +2,31 @@
 #define _REDUCE_H_
 #include "list.h"
 
-class ReduceFunction {
+template <typename T> class ReduceFunction {
 protected:
-  virtual int function( int x, int y ) const = 0;
+  virtual T function( T x, T y ) const = 0;
 public:
-  int reduce( const List &list ) const;
-  virtual int identity() const = 0;
+  T reduce( const List<T> &list ) const;
+  virtual T identity() const = 0;
   virtual ~ReduceFunction() {}
 };
 
 // An example ReduceFunction
-class SumReduce : public ReduceFunction {
-  int function( int x, int y ) const;
+template <typename T> class SumReduce : public ReduceFunction<T> {
+  T function( T x, T y ) const;
 public:
   SumReduce() {}
   ~SumReduce() {}
-  int identity() const { return 0; }
+  T identity() const { return (T)0; }
 };
 
 // Another ReduceFunction
-class ProductReduce : public ReduceFunction {
-  int function( int x, int y ) const;
+template <typename T> class ProductReduce : public ReduceFunction<T> {
+  T function( T x, T y ) const;
 public:
   ProductReduce() {}
   ~ProductReduce() {}
-  int identity() const { return 1; }
+  T identity() const { return (T)1; }
 };
 
 #endif // _REDUCE_H_

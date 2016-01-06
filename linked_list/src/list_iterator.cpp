@@ -1,27 +1,37 @@
 #include "../include/list.h"
 
-List::iterator::iterator( ListNodeI *node ) : _node(node) {}
+template <typename T>
+List<T>::iterator::iterator( ListNode<T> *node ) : _node(node) {}
 
-List::iterator& List::iterator::operator++() { 
+template <typename T>
+typename List<T>::iterator& List<T>::iterator::operator++() { 
   _node = _node->next(); 
   return *this; 
 }
 
-int& List::iterator::operator*() { return _node->value(); }
+template <typename T>
+int& List<T>::iterator::operator*() { return _node->value(); }
 
-bool List::iterator::operator==( const iterator &rhs ) { return _node == rhs._node; }
+template <typename T>
+bool List<T>::iterator::operator==( const iterator &rhs ) { return _node == rhs._node; }
 
-bool List::iterator::operator!=( const iterator &rhs ) { return _node != rhs._node; }
+template <typename T>
+bool List<T>::iterator::operator!=( const iterator &rhs ) { return _node != rhs._node; }
 
-List::const_iterator::const_iterator( ListNodeI *node ) : _node(node) {}
+template <typename T>
+List<T>::const_iterator::const_iterator( ListNode<T> *node ) : _node(node) {}
 
-List::const_iterator& List::const_iterator::operator++() { 
+template <typename T>
+typename List<T>::const_iterator& List<T>::const_iterator::operator++() { 
   _node = _node->next(); 
   return *this; 
 }
 
-const int& List::const_iterator::operator*() { return _node->value(); }
+template <typename T>
+const int& List<T>::const_iterator::operator*() { return _node->value(); }
 
-bool List::const_iterator::operator==( const const_iterator &rhs ) { return _node == rhs._node; }
+template <typename T>
+bool List<T>::const_iterator::operator==( const const_iterator &rhs ) { return _node == rhs._node; }
 
-bool List::const_iterator::operator!=( const const_iterator &rhs ) { return _node != rhs._node; }
+template <typename T>
+bool List<T>::const_iterator::operator!=( const const_iterator &rhs ) { return _node != rhs._node; }

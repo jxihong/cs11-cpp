@@ -1,12 +1,14 @@
 #include "../include/list.h"
 #include "../include/apply.h"
 
-void ApplyFunction::apply( List &list ) const {
+template<typename T>
+void ApplyFunction<T>::apply( List<T> &list ) const {
   for( auto it = list.begin(); it != list.end(); ++it ) {
     *it = function( *it );
   }
 }
 
-int SquareApply::function( int x ) const {
+template<typename T>
+int SquareApply<T>::function( T x ) const {
   return x * x;
 }

@@ -3,7 +3,7 @@ C++ Linked-List Implementation
 
 Written By: Joey Hong
 
-This is an implementation of the linked-list data structure for integers. It includes regular and const iterators, as well as various interfaces that can be applied to the list.
+This is an implementation of the linked-list data structure. It includes regular and const iterators, as well as various quantitative interfaces that can be applied to the list.
 
 ----------------------------------
 

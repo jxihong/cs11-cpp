@@ -1,18 +1,21 @@
 #include "../include/list.h"
 #include "../include/reduce.h"
 
-int ReduceFunction::reduce( const List &list ) const {
-  int result = identity();
+template <typename T>
+T ReduceFunction<T>::reduce( const List<T> &list ) const {
+  T result = identity();
   for( auto it = list.begin(); it != list.end(); ++it ) {
     result = function( result, *it );
   }
   return result;
 }
 
-int SumReduce::function( int x, int y ) const { 
+template <typename T>
+T SumReduce<T>::function( T x, T y ) const { 
   return x + y; 
 }
 
-int ProductReduce::function( int x, int y ) const { 
+template <typename T>
+T ProductReduce<T>::function( T x, T y ) const { 
   return x * y; 
 }
